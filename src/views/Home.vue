@@ -1,13 +1,22 @@
 <template>
   <div class="home">
-    <h1 v-if="hpMonster > 0" >{{ hpMonster }}</h1>
-    <div v-if="hpMonster === 0" class="score">
+    <div v-if="player === ''" class="newPlayer">
+      <input type="text" v-model="username" placeholder="Insert Your Username">
+      <button @click.prevent="addPlayer" >Submit</button>
+    </div>
+
+    <div v-if="player !== ''" class="gamePlay">
+      <h1 v-if="hpMonster > 0" >{{ hpMonster }}</h1>
+      <button v-if="hpMonster > 0" @click.prevent="attack">Attack</button>
+    </div>
+
+    <div v-if="hpMonster === 0 && player !== ''" class="score">
+      <h2>Congratulations {{ player }}</h2>
       <h2>Your Score</h2>
       <h1>{{ score }}</h1>
+      <button v-if="hpMonster === 0" @click.prevent="playAgain">Play Again</button>
+      <button v-if="hpMonster === 0" @click.prevent="exitGame">Exit Game</button>
     </div>
-    <button v-if="hpMonster > 0" @click.prevent="attack">Attack</button>
-    <button v-if="hpMonster === 0">Play Again</button>
-    <button v-if="hpMonster === 0">Exit Room</button>
   </div>
 </template>
 
@@ -18,15 +27,26 @@ export default {
   name: 'Home',
   data () {
     return {
-      hp: 0
+      username: ''
     }
   },
   components: {
   },
   methods: {
+    addPlayer () {
+      this.$socket.emit('addPlayer', this.username)
+    },
     attack () {
       this.$socket.emit('attack', 1)
-      // this.$store.dispatch('decreaseHp')
+    },
+    playAgain () {
+      this.$store.state.hp = 10
+      this.$store.state.score = 0
+    },
+    exitGame () {
+      this.$store.state.username = ''
+      this.$store.state.hp = 10
+      this.$store.state.score = 0
     }
   },
   computed: {
@@ -35,6 +55,9 @@ export default {
     },
     score () {
       return this.$store.state.score
+    },
+    player () {
+      return this.$store.state.username
     }
   },
   sockets: {
