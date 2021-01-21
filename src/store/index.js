@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    username: '',
     hp: 0,
     score: 0
   },
@@ -17,12 +18,11 @@ export default new Vuex.Store({
     },
     SOCKET_myScore (state, payload) {
       state.score = state.score + payload
+    },
+    SOCKET_username (state, payload) {
+      state.username = payload
     }
   },
   actions: {
-    decreaseHp (context, payload) {
-      payload = 1
-      context.commit('hpMonster', payload)
-    }
   }
 })
