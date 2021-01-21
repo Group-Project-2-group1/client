@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     username: '',
     hp: 0,
-    score: 0
+    score: 0,
+    isLogin: false
   },
   mutations: {
     SOCKET_init (state, payload) {
