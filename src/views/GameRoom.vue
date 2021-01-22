@@ -1,15 +1,20 @@
 <template>
   <div class="GameRoom">
 
-    <div> <!-- button to start game -->
+    <div
+     v-if="userConnected <= 4 && startCondition === true"> <!-- button to start game -->
+      <p>People on this party: {{ userConnected }} (need 4 people)</p>
       <button v-if="userConnected >= 4 && startCondition === true" @click.prevent="startGame">START</button>
       <!-- <button v-if="startCondition !== true" @click.prevent="startGame">START</button> -->
     </div>
-
+    <audio id="sound1" src="../assets/hit.wav" preload="auto"></audio>
 <!-- disable first, enable after start button -->
-    <div class="gamePlay">
+    <div class="gamePlay"
+     v-if="userConnected >= 4 && startCondition === false">
       <h1 v-if="hpMonster > 0" >{{ hpMonster }}</h1>
-      <button v-if="hpMonster > 0" @click.prevent="attack">Attack</button>
+      <button onclick="document.getElementById('sound1').play();"
+       v-if="hpMonster > 0" @click.prevent="attack"
+      >Attack</button>
     </div>
 
     <div v-if="hpMonster === 0 && player !== ''" class="score">
