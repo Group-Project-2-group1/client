@@ -2,11 +2,28 @@
   <div id="app">
     <div id="nav">
       <router-link id="lobby" to="/">Fighting Monster</router-link>
-      <button class="btn-danger" id="out">Retire</button>
+      <button v-if="username" @click.prevent="clearUsername" class="btn-danger" id="out">Retire</button>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Player',
+  methods: {
+    clearUsername () {
+      this.$store.commit('clearUsername', '')
+      this.$router.push('Player')
+    }
+  },
+  computed: {
+    username () {
+      return this.$store.state.username
+    }
+  }
+}
+</script>
 
 <style>
 #lobby {

@@ -2,7 +2,7 @@
   <div class="GameRoom">
 
     <div> <!-- button to start game -->
-      <button v-if="userConnected >= 2 && startCondition === true" @click.prevent="startGame">START</button>
+      <button v-if="userConnected >= 4 && startCondition === true" @click.prevent="startGame">START</button>
       <!-- <button v-if="startCondition !== true" @click.prevent="startGame">START</button> -->
     </div>
 
@@ -48,18 +48,15 @@ export default {
       }))
     },
     playAgain () {
-      this.$store.state.hp = 10
+      this.$store.state.hp = 100
       this.$store.state.score = 0
       // main show hide lagi,kembali ke posisi awal
     },
     exitGame () {
-      this.$store.state.username = ''
-      this.$store.state.hp = 10 // ini sepertinya ga perlu lagi
-      this.$store.state.score = 0
-      // routing ke home
+      this.$router.push({ path: '/' })
     },
     startGame () {
-      this.$store.state.hp = 50
+      this.$store.state.hp = 100
       this.$store.state.score = 0
       this.$socket.emit('changeStart', ({
         room: this.$store.state.room,

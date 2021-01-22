@@ -24,7 +24,6 @@ export default {
   methods: {
     addPlayer () {
       this.$socket.emit('addPlayer', this.username)
-      this.$router.push({ path: '/' })
     }
   }
 }

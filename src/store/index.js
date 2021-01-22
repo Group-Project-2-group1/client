@@ -26,6 +26,7 @@ export default new Vuex.Store({
     },
     SOCKET_username (state, payload) {
       state.username = payload
+      router.push({ path: '/' })
     },
     SOCKET_roomname (state, payload) {
       state.roomname = payload
@@ -47,6 +48,9 @@ export default new Vuex.Store({
     },
     SOCKET_start (state, payload) {
       state.hp = payload
+    },
+    clearUsername (state, payload) {
+      state.username = payload
     }
   },
   actions: {
