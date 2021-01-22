@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '../router'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ export default new Vuex.Store({
     score: 0,
     roomname: [],
     room: '',
-    userConnected: 0
+    userConnected: 0,
+    startCondition: true
   },
   mutations: {
     SOCKET_init (state, payload) {
@@ -31,8 +33,20 @@ export default new Vuex.Store({
     SOCKET_currentPlayer (state, payload) {
       state.userConnected = payload
     },
+    SOCKET_changeStart (state, payload) {
+      state.startCondition = payload
+    },
     changeCurrentRoom (state, payload) {
       state.room = payload
+    },
+    SOCKET_toRoute (state, payload) {
+      router.push(payload)
+    },
+    SOCKET_toLobby (state, payload) {
+      router.push(payload)
+    },
+    SOCKET_start (state, payload) {
+      state.hp = payload
     }
   },
   actions: {

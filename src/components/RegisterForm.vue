@@ -5,16 +5,28 @@
       <div class="input-group-prepend">
         <div class="input-group-text">@</div>
       </div>
-      <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Username">
+      <input v-model="username" type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Username">
     </div>
-    <button class="btn-primary" id="regBtn">Register</button>
+    <button @click.prevent="addPlayer" class="btn-primary" id="regBtn">Register</button>
     <p id="fee">(free of charge)</p>
   </form>
+
 </template>
 
 <script>
 export default {
-  name: 'RegisterForm'
+  name: 'RegisterForm',
+  data () {
+    return {
+      username: ''
+    }
+  },
+  methods: {
+    addPlayer () {
+      this.$socket.emit('addPlayer', this.username)
+      this.$router.push({ path: '/' })
+    }
+  }
 }
 </script>
 

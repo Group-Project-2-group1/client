@@ -1,17 +1,13 @@
 <template>
   <div class="GameRoom">
 
-    <div v-if="player === ''" class="newPlayer">
-      <input type="text" v-model="username" placeholder="Insert Your Username">
-      <button @click.prevent="addPlayer" >Submit</button>
-    </div>
-
     <div> <!-- button to start game -->
-      <button @click.prevent="startGame">START</button>
+      <button v-if="userConnected >= 2 && startCondition === true" @click.prevent="startGame">START</button>
+      <!-- <button v-if="startCondition !== true" @click.prevent="startGame">START</button> -->
     </div>
 
 <!-- disable first, enable after start button -->
-    <div v-if="player !== ''" class="gamePlay">
+    <div class="gamePlay">
       <h1 v-if="hpMonster > 0" >{{ hpMonster }}</h1>
       <button v-if="hpMonster > 0" @click.prevent="attack">Attack</button>
     </div>
@@ -64,6 +60,15 @@ export default {
     },
     startGame () {
       this.$store.state.hp = 50
+      this.$store.state.score = 0
+      this.$socket.emit('changeStart', ({
+        room: this.$store.state.room,
+        payload: false
+      }))
+      this.$socket.emit('start', ({
+        room: this.$store.state.room,
+        payload: this.$store.state.hp
+      }))
     }
   },
   computed: {
@@ -78,9 +83,20 @@ export default {
     },
     currentRoom () {
       return this.$store.state.room
+    },
+    startCondition () {
+      return this.$store.state.startCondition
+    },
+    userConnected () {
+      console.log(this.$store.state.userConnected, 'sasasasasa')
+      return this.$store.state.userConnected
     }
   },
   sockets: {
+  },
+  mounted () {
+    this.startCondition()
   }
+
 }
 </script>

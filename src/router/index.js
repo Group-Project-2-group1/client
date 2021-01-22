@@ -1,14 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
-
 import GameRoom from '../views/GameRoom'
 import Ingame from '../views/Home.vue'
 import store from '../store'
 
-
 Vue.use(VueRouter)
-
 const routes = [
   {
     path: '/ingame',
@@ -39,20 +35,22 @@ const router = new VueRouter({
 })
 
 function lookLogin () {
-  store.commit('getIsLogin')
-  return store.state.isLogin
+  return store.state.username !== ''
 }
 
 router.beforeEach((to, from, next) => {
   switch (to.name) {
     case 'Lobby':
-      // if (lookLogin()) next()
-      // else next({ name: 'Player' })
-      next()// hapus bagian ini jika guard aktif
+      if (lookLogin()) next()
+      else next({ name: 'Player' })
       break
     case 'Player':
       if (lookLogin()) next({ name: 'Lobby' })
       else next()
+      break
+    case 'GameRoom':
+      if (lookLogin()) next()
+      else next({ name: 'Player' })
       break
     default:
       next()
