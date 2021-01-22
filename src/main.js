@@ -7,7 +7,7 @@ import VueSocketIO from 'vue-socket.io'
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: 'http://localhost:3000',
+  connection: 'https://gp2-group1.herokuapp.com',
   vuex: {
     store,
     actionPrefix: 'SOCKET_',
