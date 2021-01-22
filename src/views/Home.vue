@@ -1,66 +1,56 @@
 <template>
   <div class="home">
-    <div v-if="player === ''" class="newPlayer">
-      <input type="text" v-model="username" placeholder="Insert Your Username">
-      <button @click.prevent="addPlayer" >Submit</button>
+    <div>
+      <label for="forRoom">Room name:</label>
+      <input v-model="roomname" id="forRoom" type="text">
+      <button @click.prevent="addNewRoom">create</button>
     </div>
 
-    <div v-if="player !== ''" class="gamePlay">
-      <h1 v-if="hpMonster > 0" >{{ hpMonster }}</h1>
-      <button v-if="hpMonster > 0" @click.prevent="attack">Attack</button>
-    </div>
-
-    <div v-if="hpMonster === 0 && player !== ''" class="score">
-      <h2>Congratulations {{ player }}</h2>
-      <h2>Your Score</h2>
-      <h1>{{ score }}</h1>
-      <button v-if="hpMonster === 0" @click.prevent="playAgain">Play Again</button>
-      <button v-if="hpMonster === 0" @click.prevent="exitGame">Exit Game</button>
+    <div v-for="(room, i) in roomnameFromState" :key="i">
+      <button v-if="userCountFromState < 4" @click.prevent="goToRoom(room)" > {{ room }} </button>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
   name: 'Home',
   data () {
     return {
-      username: ''
+      roomname: ''
     }
   },
   components: {
   },
   methods: {
-    addPlayer () {
-      this.$socket.emit('addPlayer', this.username)
+    addNewRoom () {
+      this.$socket.emit('addNewRoom', this.roomname)
+      this.$store.commit('changeCurrentRoom', this.roomname)
+      this.$router.push('GameRoom')
     },
-    attack () {
-      this.$socket.emit('attack', 1)
+    goToRoom (room) {
+      this.$socket.emit('goToRoom', room)
+      this.$store.commit('changeCurrentRoom', room)
+      this.$router.push('GameRoom')
     },
-    playAgain () {
-      this.$store.state.hp = 10
-      this.$store.state.score = 0
-    },
-    exitGame () {
-      this.$store.state.username = ''
-      this.$store.state.hp = 10
-      this.$store.state.score = 0
+    refresh () {
+      return this.roomnameFromState
     }
   },
   computed: {
-    hpMonster () {
-      return this.$store.state.hp
+    roomnameFromState () {
+      return this.$store.state.roomname
     },
-    score () {
-      return this.$store.state.score
-    },
-    player () {
-      return this.$store.state.username
+    userCountFromState () {
+      return this.$store.state.userConnected
     }
   },
-  sockets: {
+  created () {
+    this.refresh()
   }
 }
 </script>
+
+<style>
+
+</style>

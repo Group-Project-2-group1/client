@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
+
+import GameRoom from '../views/GameRoom'
 import Ingame from '../views/Home.vue'
 import store from '../store'
+
 
 Vue.use(VueRouter)
 
@@ -15,6 +19,11 @@ const routes = [
     path: '/player',
     name: 'Player',
     component: () => import('../views/Player.vue')
+  },
+  {
+    path: '/gameRoom',
+    name: 'GameRoom',
+    component: GameRoom
   },
   {
     path: '/',
