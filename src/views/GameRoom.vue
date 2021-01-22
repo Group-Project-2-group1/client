@@ -1,20 +1,21 @@
 <template>
   <div class="GameRoom">
 
-    <div
-     v-if="userConnected <= 4 && startCondition === true"> <!-- button to start game -->
-      <p>People on this party: {{ userConnected }} (need 4 people)</p>
-      <button v-if="userConnected >= 4 && startCondition === true" @click.prevent="startGame">START</button>
-      <!-- <button v-if="startCondition !== true" @click.prevent="startGame">START</button> -->
-    </div>
+    <p v-if="userConnected < 4">People on this party: {{ userConnected }} (need 4 people)</p>
+    <button v-if="userConnected >= 4 && startCondition === true" @click.prevent="startGame">START</button>
+
     <audio id="sound1" src="../assets/hit.wav" preload="auto"></audio>
 <!-- disable first, enable after start button -->
     <div class="gamePlay"
      v-if="userConnected >= 4 && startCondition === false">
-      <h1 v-if="hpMonster > 0" >{{ hpMonster }}</h1>
-      <button onclick="document.getElementById('sound1').play();"
+     <h3>HP</h3>
+      <h1 v-if="hpMonster > 0" >{{ hpMonster }} / 100</h1>
+      <img onclick="document.getElementById('sound1').play();" class="btn btn-outline-light" @click.prevent="attack" src="../assets/monster.png" width="200px">
+      <!-- <button onclick="document.getElementById('sound1').play();"
        v-if="hpMonster > 0" @click.prevent="attack"
-      >Attack</button>
+      >Attack</button> -->
+      <h5>Hit to defeat them</h5>
+      <p>(If you hit the monster fastly they will regen some HP)</p>
     </div>
 
     <div v-if="hpMonster === 0 && player !== ''" class="score">
