@@ -25,6 +25,11 @@ const routes = [
     path: '/',
     name: 'Lobby',
     component: () => import('../views/Lobby.vue')
+  },
+  {
+    path: '*',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue')
   }
 ]
 
